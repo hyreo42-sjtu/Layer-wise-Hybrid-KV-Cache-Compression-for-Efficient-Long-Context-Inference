@@ -1,6 +1,6 @@
 # Layer-wise Hybrid KV Cache Compression for Efficient Long-Context Inference
 
-本项目实现语言模型高效推理小组部分：在 Pythia-70M 上比较 Dense Baseline、StreamingLLM、PyramidKV、Adaptive PyramidKV 以及层间混合压缩策略。
+本项目实现了语言模型高效推理的小组部分：实现了 Adaptive PyramidKV 和基于 StreamingLLM with SnapKV Enhanced + AdaptiveKV 的混合压缩策略，并在 Pythia-70M 上比较了 Dense Baseline、StreamingLLM、SnapKV、PyramidKV、Adaptive PyramidKV 以及层间混合压缩策略的 PPL、速度和 KV cache memory。
 
 ## 方法
 
@@ -46,7 +46,7 @@ Adaptive PyramidKV 是本项目的创新方法之一。它在 PyramidKV 的 laye
 
 实现上，每层维护 attention entropy 的指数滑动统计，并将其归一化映射到 `budget_min` 到 `budget_max` 的预算区间。相比固定 PyramidKV，Adaptive PyramidKV 不再使用静态层预算，而是根据实际样本和层状态自适应分配 KV cache。实验中它在 wikitext 上以约 9.6 MB KV cache 取得 44.6455 PPL，相比固定 `pyramid_0.3` 同时减少 KV cache 并改善 PPL，体现了动态预算的优势。
 
-### Mix-A
+### Mix-A 
 
 Mix-A 是基础 hybrid 策略：浅层使用 StreamingLLM，深层使用 Adaptive PyramidKV。其设计动机是浅层表示更偏局部模式，可以采用简单的 sink + recent 策略强压缩；深层对语义整合更敏感，因此使用 Adaptive PyramidKV 保留更重要的全局信息。
 

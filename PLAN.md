@@ -42,9 +42,9 @@
 - 压缩时根据注意力分数（或简单根据位置？PyramidKV 原版使用最近的位置保留？请按 PyramidKV 论文方式：保留最近的重要 token 和 sink？）—— 为了简化，可以使用保留注意力分数最高的 token（类似 SnapKV）的位置，也可以保留最近的 token 与高分 token 混合。建议：保留 budget 数量的 token，其中 80% 为最近的重要 token（按注意力分数），20% 为全局高分 token。但可先实现简单版本：只保留注意力分数最高的 `keep` 个 token（不包括 sink？需要确定是否保留 sink）。由于深层通常有 sink 现象，建议始终保留前 4 个 token 再加上高分 token，这样总数不超过 keep+4。具体逻辑可以：从全序列中选出 top-(keep-4) 个高分 token，再加上前 4 个 sink token。
 
 ### 3.4 混合调度器 HybridCompressor
-- 输入：模型层数 `num_layers=24`，浅层索引 0~11，深层索引 12~23。
+- 输入：模型层数 `num_layers=24`，浅层索引 0-7，深层索引 8-23。
 - 定义 `get_compressor(layer_idx)`：
-  - 若 layer_idx < 12：返回 StreamingLLMPress 实例（可配置参数）
+  - 若 layer_idx < 8：返回 StreamingLLMPress 实例（可配置参数）
   - 否则：返回 AdaptivePyramidKVPress 实例
 - 在推理的每个 forward 之后，需要获取该层的 KV cache 和注意力分数（如果可能从模型内部获取）。由于标准 transformers 不直接暴露每层的注意力分数，我们需要 **hook** 或 **修改模型 forward**。简单方案：使用 `transformers` 的 `output_attentions=True` 来获取所有层的注意力概率（shape: [batch, num_heads, seq_len, seq_len]），然后在每层生成后对 KV cache 进行压缩。
 - 或者，更简洁但可能略低效的方法是：在生成每个 token 后，重新计算一次当前层的注意力分数（仅对当前 query 和当前 cache 中的 keys 做点积）。但为了性能，建议使用 `output_attentions` 一次获取所有层的注意力，然后每层压缩。

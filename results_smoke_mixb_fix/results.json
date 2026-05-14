@@ -1,0 +1,15 @@
+[
+  {
+    "dataset": "wikitext",
+    "method": "mix_b",
+    "run_id": 0,
+    "input_length": 512,
+    "generated_tokens": 8,
+    "ppl": 18.383034718511674,
+    "ttft_sec": 0.017927699998836033,
+    "tpot_ms": 4.544928572223788,
+    "throughput_tok_s": 160.8292355242016,
+    "peak_memory_mb": 462.70849609375,
+    "kv_cache_memory_mb": 7.1953125
+  }
+]

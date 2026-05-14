@@ -1,0 +1,28 @@
+[
+  {
+    "dataset": "wikitext",
+    "method": "baseline",
+    "run_id": 0,
+    "input_length": 512,
+    "generated_tokens": 4,
+    "ppl": 8.835019697605455,
+    "ttft_sec": 0.014116300037130713,
+    "tpot_ms": 4.179066667954127,
+    "throughput_tok_s": 150.0740988556099,
+    "peak_memory_mb": 399.416015625,
+    "kv_cache_memory_mb": 12.0
+  },
+  {
+    "dataset": "wikitext",
+    "method": "mix_a",
+    "run_id": 0,
+    "input_length": 512,
+    "generated_tokens": 4,
+    "ppl": 9.457197614969376,
+    "ttft_sec": 0.01577630010433495,
+    "tpot_ms": 4.434699968745311,
+    "throughput_tok_s": 137.5496897754494,
+    "peak_memory_mb": 462.708984375,
+    "kv_cache_memory_mb": 7.1953125
+  }
+]

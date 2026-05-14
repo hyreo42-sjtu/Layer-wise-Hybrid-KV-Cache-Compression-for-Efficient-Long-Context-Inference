@@ -1,0 +1,15 @@
+[
+  {
+    "dataset": "wikitext",
+    "method": "snapkv",
+    "run_id": 0,
+    "input_length": 512,
+    "generated_tokens": 8,
+    "ppl": 19.496502866936382,
+    "ttft_sec": 0.023634199998923577,
+    "tpot_ms": 4.5758999996386205,
+    "throughput_tok_s": 143.71558686292676,
+    "peak_memory_mb": 445.13037109375,
+    "kv_cache_memory_mb": 3.609375
+  }
+]

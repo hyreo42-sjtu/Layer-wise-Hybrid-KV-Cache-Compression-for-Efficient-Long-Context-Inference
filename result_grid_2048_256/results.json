@@ -1,0 +1,80 @@
+[
+  {
+    "dataset": "wikitext",
+    "method": "mix_b_top384_split16",
+    "run_id": 0,
+    "input_length": 2048,
+    "generated_tokens": 256,
+    "ppl": 46.73188209870492,
+    "ttft_sec": 0.07999199999903794,
+    "tpot_ms": 4.627983921576136,
+    "throughput_tok_s": 203.15398143300095,
+    "peak_memory_mb": 1505.9873046875,
+    "kv_cache_memory_mb": 9.09375
+  },
+  {
+    "dataset": "wikitext",
+    "method": "mix_b_top384_split16",
+    "run_id": 1,
+    "input_length": 2048,
+    "generated_tokens": 256,
+    "ppl": 46.73188209870492,
+    "ttft_sec": 0.0782102999946801,
+    "tpot_ms": 4.513271372564429,
+    "throughput_tok_s": 208.28341514854196,
+    "peak_memory_mb": 1505.9892578125,
+    "kv_cache_memory_mb": 9.09375
+  },
+  {
+    "dataset": "wikitext",
+    "method": "mix_b_top384_split16",
+    "run_id": 2,
+    "input_length": 2048,
+    "generated_tokens": 256,
+    "ppl": 46.73188209870492,
+    "ttft_sec": 0.07719709999946645,
+    "tpot_ms": 4.553856470595871,
+    "throughput_tok_s": 206.71325520463824,
+    "peak_memory_mb": 1505.9892578125,
+    "kv_cache_memory_mb": 9.09375
+  },
+  {
+    "dataset": "pg19",
+    "method": "mix_b_top384_split16",
+    "run_id": 0,
+    "input_length": 2048,
+    "generated_tokens": 256,
+    "ppl": 45.36765057996436,
+    "ttft_sec": 0.08020599999872502,
+    "tpot_ms": 4.3270827451088545,
+    "throughput_tok_s": 216.2870758077577,
+    "peak_memory_mb": 1505.9892578125,
+    "kv_cache_memory_mb": 9.09375
+  },
+  {
+    "dataset": "pg19",
+    "method": "mix_b_top384_split16",
+    "run_id": 1,
+    "input_length": 2048,
+    "generated_tokens": 256,
+    "ppl": 45.36765057996436,
+    "ttft_sec": 0.0762994999968214,
+    "tpot_ms": 4.45635764706679,
+    "throughput_tok_s": 211.10430061536258,
+    "peak_memory_mb": 1505.9892578125,
+    "kv_cache_memory_mb": 9.09375
+  },
+  {
+    "dataset": "pg19",
+    "method": "mix_b_top384_split16",
+    "run_id": 2,
+    "input_length": 2048,
+    "generated_tokens": 256,
+    "ppl": 45.36765057996436,
+    "ttft_sec": 0.07887209999898914,
+    "tpot_ms": 4.6608984313720345,
+    "throughput_tok_s": 201.9881313038292,
+    "peak_memory_mb": 1505.9892578125,
+    "kv_cache_memory_mb": 9.09375
+  }
+]

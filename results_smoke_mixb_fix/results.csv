@@ -1,0 +1,2 @@
+dataset,method,run_id,input_length,generated_tokens,ppl,ttft_sec,tpot_ms,throughput_tok_s,peak_memory_mb,kv_cache_memory_mb
+wikitext,mix_b,0,512,8,18.383034718511674,0.017927699998836033,4.544928572223788,160.8292355242016,462.70849609375,7.1953125

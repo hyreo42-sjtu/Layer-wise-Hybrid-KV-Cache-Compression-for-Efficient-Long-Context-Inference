@@ -1,0 +1,2 @@
+dataset,method,run_id,input_length,generated_tokens,ppl,ttft_sec,tpot_ms,throughput_tok_s,peak_memory_mb,kv_cache_memory_mb
+wikitext,snapkv,0,512,8,19.496502866936382,0.023634199998923577,4.5758999996386205,143.71558686292676,445.13037109375,3.609375

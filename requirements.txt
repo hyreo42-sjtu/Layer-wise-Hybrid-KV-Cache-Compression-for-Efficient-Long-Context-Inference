@@ -1,0 +1,9 @@
+torch
+transformers>=4.35
+datasets
+accelerate
+sentencepiece
+protobuf
+huggingface_hub
+flash-attn
+kvpress

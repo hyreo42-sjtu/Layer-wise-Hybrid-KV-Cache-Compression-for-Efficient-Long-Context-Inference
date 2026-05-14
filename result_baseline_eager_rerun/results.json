@@ -1,0 +1,80 @@
+[
+  {
+    "dataset": "wikitext",
+    "method": "baseline",
+    "run_id": 0,
+    "input_length": 2048,
+    "generated_tokens": 256,
+    "ppl": 41.54844294646802,
+    "ttft_sec": 0.06581919999734964,
+    "tpot_ms": 4.135568627423388,
+    "throughput_tok_s": 228.49202759381586,
+    "peak_memory_mb": 730.619140625,
+    "kv_cache_memory_mb": 48.0
+  },
+  {
+    "dataset": "wikitext",
+    "method": "baseline",
+    "run_id": 1,
+    "input_length": 2048,
+    "generated_tokens": 256,
+    "ppl": 41.54844294646802,
+    "ttft_sec": 0.07024280000769068,
+    "tpot_ms": 4.274590588209,
+    "throughput_tok_s": 220.63955477677095,
+    "peak_memory_mb": 730.62109375,
+    "kv_cache_memory_mb": 48.0
+  },
+  {
+    "dataset": "wikitext",
+    "method": "baseline",
+    "run_id": 2,
+    "input_length": 2048,
+    "generated_tokens": 256,
+    "ppl": 41.54844294646802,
+    "ttft_sec": 0.06597000001056585,
+    "tpot_ms": 4.115739215665277,
+    "throughput_tok_s": 229.49689529141753,
+    "peak_memory_mb": 730.62109375,
+    "kv_cache_memory_mb": 48.0
+  },
+  {
+    "dataset": "pg19",
+    "method": "baseline",
+    "run_id": 0,
+    "input_length": 2048,
+    "generated_tokens": 256,
+    "ppl": 45.63315809592332,
+    "ttft_sec": 0.06912139999622013,
+    "tpot_ms": 4.360040392174257,
+    "throughput_tok_s": 216.77798978540235,
+    "peak_memory_mb": 730.62109375,
+    "kv_cache_memory_mb": 48.0
+  },
+  {
+    "dataset": "pg19",
+    "method": "baseline",
+    "run_id": 1,
+    "input_length": 2048,
+    "generated_tokens": 256,
+    "ppl": 45.63315809592332,
+    "ttft_sec": 0.07052090000070166,
+    "tpot_ms": 4.321999607810879,
+    "throughput_tok_s": 218.3125328122395,
+    "peak_memory_mb": 730.62109375,
+    "kv_cache_memory_mb": 48.0
+  },
+  {
+    "dataset": "pg19",
+    "method": "baseline",
+    "run_id": 2,
+    "input_length": 2048,
+    "generated_tokens": 256,
+    "ppl": 45.63315809592332,
+    "ttft_sec": 0.0695384999999078,
+    "tpot_ms": 4.341078431382044,
+    "throughput_tok_s": 217.59206332905927,
+    "peak_memory_mb": 730.62109375,
+    "kv_cache_memory_mb": 48.0
+  }
+]

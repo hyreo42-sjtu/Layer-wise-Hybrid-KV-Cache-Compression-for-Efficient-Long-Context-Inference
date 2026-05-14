@@ -158,7 +158,7 @@ result/results.csv
 
 | Dataset | Method | PPL | TTFT (s) | TPOT (ms/token) | Throughput (tok/s) | Peak Memory (MB) | KV Cache (MB) |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| wikitext | baseline | 41.5484 | 0.0679 | 4.4384 | 213.58 | 730.6 | 48.0 |
+| wikitext | baseline | 41.5484 | 0.0673 | 4.1753 | 226.21 | 730.6 | 48.0 |
 | wikitext | streaming | 46.2643 | 0.0725 | 4.4867 | 210.42 | 1517.2 | 12.1 |
 | wikitext | streaming_snapkv | 54.7621 | 0.0766 | 4.5309 | 207.86 | 1494.0 | 3.1 |
 | wikitext | snapkv | 43.5751 | 0.0752 | 4.5235 | 208.38 | 1520.2 | 14.4 |
@@ -167,7 +167,7 @@ result/results.csv
 | wikitext | adaptive_pyramid_0.3 | 44.6455 | 0.1056 | 4.3853 | 209.19 | 1879.8 | 9.6 |
 | wikitext | mix_a | 45.4775 | 0.0980 | 4.5604 | 203.05 | 1884.5 | 10.9 |
 | wikitext | mix_b | 46.7319 | 0.0757 | 4.4124 | 213.22 | 1506.0 | 9.1 |
-| pg19 | baseline | 45.6332 | 0.0687 | 4.4982 | 210.58 | 730.6 | 48.0 |
+| pg19 | baseline | 45.6332 | 0.0697 | 4.3410 | 217.56 | 730.6 | 48.0 |
 | pg19 | streaming | 45.3261 | 0.0736 | 4.4725 | 210.88 | 1517.2 | 12.1 |
 | pg19 | streaming_snapkv | 46.0509 | 0.0778 | 4.5705 | 205.92 | 1494.0 | 3.1 |
 | pg19 | snapkv | 45.3778 | 0.0755 | 4.5293 | 208.08 | 1520.2 | 14.4 |
@@ -181,9 +181,10 @@ result/results.csv
 
 - **KV cache 压缩效果明显**：baseline 的 KV cache 为 48.0 MB；StreamingLLM 降至约 12.1 MB；StreamingLLM + SnapKV Enhance 降至约 3.1 MB；Adaptive PyramidKV 降至约 9.6 MB；优化后的 Mix-B 降至约 9.1 MB。说明各压缩方法均能显著降低 decode 阶段需要维护的 KV 张量规模。
 - **Adaptive PyramidKV 体现动态预算优势**：在 wikitext 上，固定 `pyramid_0.3` 的 PPL 为 45.0902，KV cache 为 14.4 MB；Adaptive PyramidKV 0.3 的 PPL 改善到 44.6455，同时 KV cache 降至 9.6 MB。这说明基于 attention entropy 的预算分配可以避免固定比例预算的冗余，在部分层减少无效 KV 保留，同时为更不确定的层保留足够上下文。
-- **Hybrid 方法具有 PPL-KV cache 折中优势**：Mix-B 的 KV cache 约为 9.1 MB，仅为 baseline 的约 19%，同时 pg19 PPL 为 45.3677，接近 baseline 的 45.6332，并优于原始 Mix-B 及部分固定压缩方法。相比 StreamingLLM + SnapKV Enhance，Mix-B 用适度增加的 KV cache 显著改善了质量；相比 PyramidKV / SnapKV，Mix-B 进一步降低 KV cache。这正是 Hybrid 设计的主要优势：通过浅层强压缩和深层自适应保真，在质量和缓存占用之间取得更平衡的点。
+- **Hybrid 方法具有 PPL-KV cache 折中优势**：Mix-B 的 KV cache 约为 9.1 MB，仅为 baseline 的约 19%，同时 pg19 PPL 为 45.3677，优于 baseline 的 45.6332。相比 StreamingLLM + SnapKV Enhance，Mix-B 用适度增加的 KV cache 显著改善了质量；相比 PyramidKV / SnapKV，Mix-B 进一步降低 KV cache。这正是 Hybrid 设计的主要优势：通过浅层强压缩和深层自适应保真，在生成质量和KV Cache之间取得更平衡的点。
+- **Hybrid 方法在部分压缩方法中速度较优**：在 pg19 数据集上，Mix-B 的 TPOT 和 Throughput 优于多数压缩方法，说明 Hybrid 策略在降低 KV cache 的同时没有引入明显 decode 阶段负担。但重新使用统一 `eager` attention 重跑 baseline 后，baseline 的 TPOT 和 Throughput 仍略优于 Mix-B，因此不能简单认为当前工程环境下 Hybrid 已取得稳定端到端速度优势。
 - **不同数据集表现存在差异**：wikitext 上 Mix-B 的 PPL 高于 baseline，说明该数据集对被压缩掉的上下文信息更敏感；pg19 上多数压缩方法 PPL 与 baseline 接近，说明长文档数据中局部延续性和冗余上下文更强，KV cache 压缩更容易保持质量。
-- **端到端速度优势不明显**：虽然 KV cache memory 明显下降，但 TPOT 和 Throughput 相比 baseline 没有稳定提升。主要原因包括：为了公平比较，baseline 与压缩方法统一使用 `eager` attention，未让 baseline 单独使用 FlashAttention-2；`pythia-70m` 参数规模较小，单步 decode 的瓶颈不完全在 KV cache 读取；当前实现基于 HuggingFace eager 推理和 Python 逐 token 循环，调度开销较高；压缩方法需要 `output_attentions=True` 在 prefill 阶段获取 attention score，会引入额外计算和显存开销；实验运行在较短生成长度下，KV cache 压缩带来的理论收益尚未充分放大。
+- **端到端速度优势不明显**：虽然 KV cache memory 明显下降，但 TPOT 和 Throughput 相比 baseline 没有稳定提升。主要原因包括：`pythia-70m` 参数规模较小，单步 decode 的瓶颈不完全在 KV cache 读取；当前实现基于 HuggingFace eager 推理和 Python 逐 token 循环，调度开销较高；压缩方法需要 `output_attentions=True` 在 prefill 阶段获取 attention score，会引入额外计算和显存开销；实验运行在较短生成长度下，KV cache 压缩带来的理论收益尚未充分放大。
 - **峰值显存偏高不等于 KV cache 变大**：压缩方法的 Peak Memory 高于 baseline，主要是因为 prefill 阶段为了计算 token 重要性需要保存 attention 矩阵。表中的 KV Cache Memory 才表示进入 decode 阶段后实际保留的 KV 张量大小。因此本项目的主要收益体现在 decode KV cache 占用，而不是当前工程实现下的峰值显存。
 
 ## Mix-B 参数搜索与长生成补充实验
